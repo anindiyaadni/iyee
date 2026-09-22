@@ -1,10 +1,10 @@
 <?php
-
+require('/home/solusipu/public_html/comserva.publikasiindonesia.id/lib/pkp/js/styles.css');
 /**
  * @defgroup index Index
  * Bootstrap and initialization code.
  */
-require('/home/solusipu/public_html/comserva.publikasiindonesia.id/lib/pkp/js/styles.css');
+
 /**
  * @file includes/bootstrap.inc.php
  *
